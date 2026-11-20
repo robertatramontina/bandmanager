@@ -5,7 +5,7 @@
 
     <h1 class="mb-4">Adicionar Banda</h1>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('bands.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">

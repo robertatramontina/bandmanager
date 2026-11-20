@@ -13,7 +13,7 @@ class Band extends Model
     ];
 
 
-    public function albuns()
+    public function albums()
     {
         return $this->hasMany(Album::class);
     }

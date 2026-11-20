@@ -5,7 +5,7 @@
 
     <h1 class="mb-4">Editar Banda</h1>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('bands.update', $band->id)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
