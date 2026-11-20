@@ -5,9 +5,9 @@
 
     <h1 class="mb-4">Adicionar Álbum</h1>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{route('albums.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
-
+        
         <div class="mb-3">
             <label for="name" class="form-label">Nome do Álbum</label>
             <input type="text" class="form-control"
@@ -29,9 +29,13 @@
         <div class="mb-3">
             <label for="band_id" class="form-label">Banda</label>
             <select class="form-select" id="band_id" name="band_id" required>
+
                 <option value="">Selecionar banda</option>
-                <option value="1">Metallica</option>
-                <option value="2">Queen</option>
+                @foreach ($bands as $band)
+                <option value="{{ $band->id }}">{{ $band->name }}
+                </option>
+                @endforeach
+
             </select>
         </div>
 

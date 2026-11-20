@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BandController;
+use App\Http\Controllers\AlbumController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,6 +30,8 @@ Route::put('/bands/{id}', [BandController::class, 'update'])->name('bands.update
 
 Route::delete('/bands/{id}', [BandController::class, 'destroy'])->name('bands.destroy');
 
+//utilizando o resources para criacao automatica das rotas
+Route::resource('albums', AlbumController::class);
 
 // Route::get('/albums/create', function () {
 //     return view('albums.create');

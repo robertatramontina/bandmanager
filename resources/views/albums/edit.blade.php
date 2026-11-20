@@ -5,7 +5,7 @@
 
     <h1 class="mb-4">Editar Álbum</h1>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('albums.update', $album->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -32,13 +32,13 @@
         <div class="mb-3">
             <label for="band_id" class="form-label">Banda</label>
             <select class="form-select" id="band_id" name="band_id" required>
-                <option value="1" {{ $album->band_id == 1 ? 'selected' : '' }}>
-                    Metallica
+            @foreach ($bands as $band)
+                <option value="{{ $band->id }}"
+                    {{ $album->band_id == $band->id ? 'selected' : '' }}>
+                    {{ $band->name }}
                 </option>
-                <option value="2" {{ $album->band_id == 2 ? 'selected' : '' }}>
-                    Queen
-                </option>
-            </select>
+            @endforeach
+        </select>
         </div>
 
         <button type="submit" class="btn btn-primary">
