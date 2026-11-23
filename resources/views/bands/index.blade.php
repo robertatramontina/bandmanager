@@ -4,6 +4,13 @@
 @section('content')
 
     <h1 class="mb-4">Lista de Bandas</h1>
+    @auth
+    @if (Auth::user()->role == 'admin')
+        <a href="{{ route('bands.create') }}" class="btn btn-success mb-3">
+            Adicionar Banda
+        </a>
+    @endif
+    @endauth
 
     <table class="table table-striped table-hover align-middle">
         <thead class="table-dark">
@@ -19,9 +26,15 @@
             @foreach ($bands as $band)
             <tr>
                 <td>
+                    @if ($band->photo)
+                    <img src="{{ asset('storage/' . $band->photo) }}"
+                        alt="{{ $band->name }}"
+                        width="80">
+                    @else
                     <img src="https://placehold.co/80x80"
-                         alt="Fotografia da banda"
-                         width="80">
+                        alt="Sem fotografia"
+                        width="80">
+                    @endif
                 </td>
                 <td>{{ $band->name }}</td>
                 <td>{{ $band->albums_count }}</td>
@@ -52,7 +65,7 @@
                             Apagar
                         </button>
                     </form>
-                    @endif 
+                    @endif
                     @endauth
                 </td>
             </tr>

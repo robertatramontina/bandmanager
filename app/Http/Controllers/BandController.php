@@ -32,11 +32,19 @@ class BandController extends Controller
     abort(403, 'Apenas o administrador pode adicionar bandas.');
     }
     $request->validate([
-        'name' => 'required|max:100'
+        'name' => 'required|max:100',
+        'photo' => 'nullable|image|max:2048'
         ]);
 
+        $path = null;
+
+        if ($request->hasFile('photo')) {
+        $path = $request->file('photo')->store('bands', 'public');
+        }
+
         Band::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'photo' => $path
         ]);
 
         return redirect()->route('bands.index');
@@ -52,14 +60,18 @@ class BandController extends Controller
     public function update(Request $request, int $id){
 
         $request->validate([
-        'name' => 'required|max:100'
+        'name' => 'required|max:100',
+        'photo' => 'nullable|image|max:2048'
         ]);
 
         $band = Band::findOrFail($id);
 
-        $band->update([
-            'name' => $request->name
-        ]);
+        if ($request->hasFile('photo')) {
+        $band->photo = $request->file('photo')->store('bands', 'public');
+        }
+
+        $band->name = $request->name;
+        $band->save();
 
         return redirect()->route('bands.index');
     }

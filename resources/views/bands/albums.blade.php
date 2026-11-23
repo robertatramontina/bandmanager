@@ -7,13 +7,23 @@
         Voltar às Bandas
     </a>
 
+    @auth
+        @if (Auth::user()->role == 'admin')
+            <a href="{{ route('albums.create') }}" class="btn btn-success mb-3">
+                Adicionar Álbum
+            </a>
+        @endif
+    @endauth
+
     <table class="table table-striped">
         <thead class="table-dark">
             <tr>
                 <th>Imagem</th>
                 <th>Nome do Álbum</th>
                 <th>Data de Lançamento</th>
-                <th>Ações</th>
+                @auth
+                    <th>Ações</th>
+                @endauth
             </tr>
         </thead>
 
@@ -21,15 +31,19 @@
             @forelse ($band->albums as $album)
                 <tr>
                     <td>
-                        <img src="https://placehold.co/80x80" alt="Capa do álbum" width="80">
+                        @if ($album->image)
+                            <img src="{{ asset('storage/' . $album->image) }}" alt="{{ $album->name }}" width="80">
+                        @else
+                            <img src="https://placehold.co/80x80" alt="Sem capa" width="80">
+                        @endif
                     </td>
 
                     <td>{{ $album->name }}</td>
 
                     <td>{{ $album->release_date }}</td>
+                    @auth
+                        <td>
 
-                    <td>
-                        @auth
                             <a href="{{ route('albums.edit', $album->id) }}" class="btn btn-warning btn-sm">
                                 Editar
                             </a>
@@ -44,17 +58,17 @@
                                         Apagar
                                     </button>
                                 </form>
-                            @endif
-                        @endauth
-                    </td>
 
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="text-center">
-                        Esta banda ainda não tem álbuns registados.
-                    </td>
-                </tr>
+                        </td>
+                @endif
+            @endauth
+            </tr>
+        @empty
+            <tr>
+                <td colspan="{{ auth()->check() ? 4 : 3 }}" class="text-center">
+                    Esta banda ainda não tem álbuns registados.
+                </td>
+            </tr>
             @endforelse
         </tbody>
     </table>

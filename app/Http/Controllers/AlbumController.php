@@ -37,13 +37,21 @@ class AlbumController extends Controller
         $request->validate([
         'name' => 'required|max:100',
         'release_date' => 'required|date',
-        'band_id' => 'required|exists:bands,id'
+        'band_id' => 'required|exists:bands,id',
+        'image' => 'nullable|image|max:2048'
         ]);
+
+        $path = null;
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('albums', 'public');
+        }
 
         Album::create([
             'name' => $request->name,
             'release_date' => $request->release_date,
-            'band_id' => $request->band_id
+            'band_id' => $request->band_id,
+            'image' => $path
         ]);
 
         return redirect()->route('bands.albums', $request->band_id);
@@ -76,10 +84,15 @@ class AlbumController extends Controller
         $request->validate([
         'name' => 'required|max:100',
         'release_date' => 'required|date',
-        'band_id' => 'required|exists:bands,id'
+        'band_id' => 'required|exists:bands,id',
+        'image' => 'nullable|image|max:2048'
         ]);
 
         $album = Album::findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $album->image = $request->file('image')->store('albums', 'public');
+        }
 
         $album->update([
             'name' => $request->name,
