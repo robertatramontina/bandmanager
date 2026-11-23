@@ -29,6 +29,43 @@ A aplicação permite:
 - Controlar o acesso às funcionalidades de acordo com o perfil do utilizador.
 - Consultar um Dashboard protegido por autenticação.
 
+## Funcionalidades adicionais
+
+Além das funcionalidades obrigatórias solicitadas no enunciado,
+foram implementadas duas funcionalidades extra:
+
+### 1. Pesquisa de Bandas
+
+Foi desenvolvido um sistema de pesquisa que permite:
+
+- Pesquisar bandas pelo nome.
+- Apresentar apenas os resultados correspondentes.
+- Informar o utilizador quando não existem resultados.
+- Limpar a pesquisa e voltar a visualizar todas as bandas.
+
+A pesquisa utiliza o Eloquent ORM e consultas à base de dados MySQL.
+
+### 2. Recuperação de Palavra-passe
+
+Foi implementado um sistema de recuperação de palavra-passe
+através do Laravel Fortify.
+
+Esta funcionalidade permite:
+
+- Solicitar a recuperação através do e-mail registado.
+- Gerar um link de recuperação com token de segurança.
+- Definir e confirmar uma nova palavra-passe.
+- Iniciar sessão com a nova palavra-passe.
+
+Em ambiente de desenvolvimento, foi utilizado o MAIL_MAILER=log,
+permitindo testar a recuperação sem um serviço de e-mail externo.
+
+### Outras melhorias
+
+- Dashboard com estatísticas dinâmicas do total de bandas e álbuns.
+- Mensagem de erro quando as credenciais de login são inválidas.
+- Interface inicial reorganizada com componentes Bootstrap.
+
 ## Perfis e permissões
 
 | Funcionalidade | Admin | User | Visitante |

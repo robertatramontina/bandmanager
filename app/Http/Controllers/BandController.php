@@ -11,11 +11,16 @@ class BandController extends Controller
         return view('home');
 }
 
-    public function index(){
+    public function index(Request $request){
+
+        $search = $request->input('search');
         $bands = Band::withCount('albums')
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        })
         ->get();
 
-        return view('bands.index', compact('bands'));
+        return view('bands.index', compact('bands', 'search'));
     }
 
     public function create(){

@@ -45,7 +45,12 @@ Route::resource('albums', AlbumController::class)
 ///rota para a dashboard após login
 /////////////////////////////////////////////////
 Route::get('/dashboard', function () {
-    return view('dashboard');
+
+    $totalBands = \App\Models\Band::count();
+    $totalAlbums = \App\Models\Album::count();
+
+    return view('dashboard', compact('totalBands', 'totalAlbums'));
+
 })->middleware('auth')->name('dashboard');
 
 //////////////////////////////////////////////////

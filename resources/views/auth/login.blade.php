@@ -4,6 +4,11 @@
 
 <div class="container mt-5">
     <h2>Login</h2>
+    @if ($errors->has('email'))
+        <div class="alert alert-danger" role="alert">
+            O e-mail ou a palavra-passe estão incorretos.
+        </div>
+    @endif
 
     <form action="{{ route('login') }}" method="POST">
         @csrf
@@ -23,6 +28,11 @@
         <button type="submit" class="btn btn-primary">
             Entrar
         </button>
+        <div class="mt-3">
+    <a href="{{ route('password.request') }}">
+        Esqueceste-te da palavra-passe?
+    </a>
+</div>
     </form>
 </div>
 
