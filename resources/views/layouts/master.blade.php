@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-PT">
 
@@ -19,9 +18,22 @@
             <a class="navbar-brand" href="/">BandManager</a>
 
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/">Início</a>
-                <a class="nav-link" href="#">Login</a>
-                <a class="nav-link" href="#">Registar</a>
+                <a class="nav-link" href="{{ route('home') }}">Início</a>
+                @guest
+                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                    <a class="nav-link" href="{{ route('register') }}">Registar</a>
+                @endguest
+
+                @auth
+                    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">
+                            Logout
+                        </button>
+                    </form>
+                @endauth
             </div>
         </div>
     </nav>
@@ -37,4 +49,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

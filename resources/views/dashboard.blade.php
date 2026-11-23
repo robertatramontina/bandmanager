@@ -1,13 +1,12 @@
-
 @extends('layouts.master')
 
 @section('content')
-
     <h1 class="mb-4">Dashboard</h1>
 
     <div class="alert alert-success">
-        Bem-vindo ao BandManager!
+        Olá, {{ Auth::user()->name }}. Bem-vindo(a) ao BandManager!
     </div>
+    <p>Tipo de utilizador: {{ Auth::user()->role }}</p>
 
     <h4>Gestão do BandManager</h4>
 
@@ -15,18 +14,19 @@
 
     <div class="d-flex gap-3 mt-4">
 
-        <a href="/bands" class="btn btn-primary">
+        <a href="{{ route('bands.index') }}" class="btn btn-primary">
             Ver Bandas
         </a>
 
-        <a href="/bands/create" class="btn btn-success">
-            Adicionar Banda
-        </a>
+        @if (Auth::user()->role == 'admin')
+            <a href="{{ route('bands.create') }}" class="btn btn-success">
+                Adicionar Banda
+            </a>
 
-        <a href="/albums/create" class="btn btn-success">
-            Adicionar Álbum
-        </a>
+            <a href="{{ route('albums.create') }}" class="btn btn-success">
+                Adicionar Álbum
+            </a>
+        @endif
 
     </div>
-
 @endsection

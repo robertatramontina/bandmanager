@@ -5,50 +5,50 @@ use App\Http\Controllers\AlbumController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
 
 ///////////////////////////////////
 //// rotas para BandController
 //////////////////////////////////
-Route::get('/home', [BandController::class, 'home']);
-
+Route::get('/home', [BandController::class, 'home'])->name('home');
 
 Route::get('/bands', [BandController::class, 'index'])->name('bands.index');
 
-// Route::get('/bands/{id}/albums', function ($id) {
-//     return view('albums.index');
-// });
+Route::get('/bands/create', [BandController::class, 'create'])
+->middleware('auth')
+->name('bands.create');
 
-Route::get('/bands/create', [BandController::class, 'create'])->name('bands.create');
+Route::post('/bands', [BandController::class, 'store'])
+->middleware('auth')
+->name('bands.store');
 
-Route::post('/bands', [BandController::class, 'store'])->name('bands.store');
+Route::get('/bands/{id}/edit', [BandController::class, 'edit'])
+->middleware('auth')
+->name('bands.edit');
 
-Route::get('/bands/{id}/edit', [BandController::class, 'edit'])->name('bands.edit');
+Route::put('/bands/{id}', [BandController::class, 'update'])
+->middleware('auth')
+->name('bands.update');
 
-Route::put('/bands/{id}', [BandController::class, 'update'])->name('bands.update');
-
-Route::delete('/bands/{id}', [BandController::class, 'destroy'])->name('bands.destroy');
+Route::delete('/bands/{id}', [BandController::class, 'destroy'])
+->middleware('auth')
+->name('bands.destroy');
 
 //utilizando o resources para criacao automatica das rotas
-Route::resource('albums', AlbumController::class);
 
-// Route::get('/albums/create', function () {
-//     return view('albums.create');
-// });
+Route::resource('albums', AlbumController::class)
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware('auth');
 
-// Route::get('/albums/{id}/edit', function ($id) {
+/////////////////////////////////////////////////
+///rota para a dashboard após login
+/////////////////////////////////////////////////
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth')->name('dashboard');
 
-//     $album = (object) [
-//         'id' => $id,
-//         'name' => 'Master of Puppets',
-//         'release_date' => '1986-03-03',
-//         'band_id' => 1
-//     ];
-
-//     return view('albums.edit', compact('album'));
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// });
+//////////////////////////////////////////////////
+///rota para selecionar albuns de uma banda
+/////////////////////////////////////////////////
+Route::get('/bands/{id}/albums', [BandController::class, 'showAlbums'])->name('bands.albums');

@@ -19,10 +19,18 @@ class BandController extends Controller
     }
 
     public function create(){
+
+        if (auth()->user()?->role !== 'admin') {
+        abort(403, 'Apenas o administrador tem autorização para adicionar bandas.');
+        }
         return view('bands.create');
    }
 
    public function store(Request $request){
+
+    if (auth()->user()?->role !== 'admin') {
+    abort(403, 'Apenas o administrador pode adicionar bandas.');
+    }
     $request->validate([
         'name' => 'required|max:100'
         ]);
@@ -57,6 +65,9 @@ class BandController extends Controller
     }
 
     public function destroy(int $id){
+        if (auth()->user()?->role !== 'admin') {
+        abort(403, 'Apenas o administrador pode apagar bandas.');
+        }
 
         $band = Band::findOrFail($id);
 
@@ -64,5 +75,12 @@ class BandController extends Controller
 
         return redirect()->route('bands.index');
     }
+
+    public function showAlbums(int $id){
+
+    $band = Band::with('albums')->findOrFail($id);
+
+    return view('bands.albums', compact('band'));
+}
 
 }

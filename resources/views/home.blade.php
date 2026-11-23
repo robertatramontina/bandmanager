@@ -12,5 +12,8 @@
     <p class="text-muted">
         As bandas disponíveis serão apresentadas aqui.
     </p>
+    <a href="{{ route('bands.index') }}" class="btn btn-primary">
+    Ver Bandas
+</a>
 
 @endsection

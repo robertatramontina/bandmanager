@@ -10,19 +10,16 @@ class AlbumController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $albums = Album::with('band')
-        ->get();
-
-        return view('albums.index', compact('albums'));
-    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        if (auth()->user()?->role !== 'admin') {
+        abort(403, 'Apenas o administrador pode adicionar álbuns.');
+        }
+
         $bands = Band::all(); //preciso disso para fazer o select com o nome das bandas
 
         return view('albums.create', compact('bands'));
@@ -33,6 +30,10 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->user()?->role !== 'admin') {
+            abort(403, 'Apenas o administrador pode adicionar álbuns.');
+        }
+
         $request->validate([
         'name' => 'required|max:100',
         'release_date' => 'required|date',
@@ -45,7 +46,7 @@ class AlbumController extends Controller
             'band_id' => $request->band_id
         ]);
 
-        return redirect()->route('albums.index');
+        return redirect()->route('bands.albums', $request->band_id);
     }
 
     /**
@@ -86,7 +87,7 @@ class AlbumController extends Controller
             'band_id' => $request->band_id
         ]);
 
-        return redirect()->route('albums.index');
+        return redirect()->route('bands.albums', $request->band_id);
     }
 
     /**
@@ -94,11 +95,16 @@ class AlbumController extends Controller
      */
     public function destroy(string $id)
     {
+        if (auth()->user()?->role !== 'admin') {
+            abort(403, 'Apenas o administrador pode apagar álbuns.');
+        }
         $album = Album::findOrFail($id);
+
+        $bandId = $album->band_id;
 
         $album->delete();
 
-        return redirect()->route('albums.index');
+        return redirect()->route('bands.albums', $bandId);
     }
 
 }
